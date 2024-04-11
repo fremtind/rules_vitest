@@ -1,7 +1,7 @@
-"aspect-build/rules_jest"
+"aspect-build/rules_vitest"
 
 module(
-    name = "aspect_rules_jest",
+    name = "fremtind_rules_vitest",
     version = "0.0.0",
     compatibility_level = 1,
 )

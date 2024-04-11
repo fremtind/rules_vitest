@@ -7,14 +7,14 @@ package(default_visibility = ["//:__subpackages__"])
 npm_link_all_packages(name = "node_modules")
 
 js_library(
-    name = "jest.config",
-    srcs = ["jest.config.js"],
-    deps = [":jest-swc-workaround"],
+    name = "vitest.config",
+    srcs = ["vitest.config.js"],
+    deps = [":vitest-swc-workaround"],
 )
 
 js_library(
-    name = "jest-swc-workaround",
-    srcs = ["jest-swc-workaround.js"],
+    name = "vitest-swc-workaround",
+    srcs = ["vitest-swc-workaround.js"],
 )
 
 copy_to_bin(

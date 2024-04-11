@@ -1,23 +1,19 @@
-"""Shows how to setup jest_test to update snapshots.
+"""Shows how to setup vitest_test to update snapshots.
 """
 
-load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
 
-jest_test(
+vitest_test(
     name = "test",
     # extra test attributes, regression test for #95
     timeout = "moderate",
-    config = "jest.config.js",
+    config = "vitest.config.mjs",
     data = [
-        ".babelrc.js",
         ":lib",
         ":tests",
-        "//example:node_modules/@babel/core",
-        "//example:node_modules/@babel/preset-env",
-        "//example:node_modules/@babel/preset-react",
-        "//example:node_modules/babel-jest",
+        "//:node_modules/react",
     ],
     flaky = False,
     log_level = "info",
@@ -32,10 +28,11 @@ js_library(
     name = "tests",
     testonly = True,
     srcs = [
-        "greetings.test.js",
-        "link.test.js",
+        #        "greetings.test.jsx",
+        "link.test.jsx",
     ],
     deps = [
+        "//example:node_modules/react",
         "//example:node_modules/react-test-renderer",
     ],
 )
@@ -43,8 +40,8 @@ js_library(
 js_library(
     name = "lib",
     srcs = [
-        "greetings.js",
-        "link.js",
+        "greetings.jsx",
+        "link.jsx",
     ],
     deps = [
         "//example:node_modules/react",

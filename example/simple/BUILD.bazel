@@ -1,6 +1,6 @@
-load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
 
-jest_test(
+vitest_test(
     name = "test",
     data = [
         "index.js",
@@ -9,21 +9,20 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "test_user_data",
     data = [
         "index.js",
         "index.test.js",
-        # should be able to add jest-cli & jest-junit explicitly in data
-        "//:node_modules/jest-cli",
-        "//:node_modules/jest-junit",
+        # should be able to add vitest explicitly in data
+        "//:node_modules/vitest",
     ],
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "js_config_test",
-    config = "jest.config.js",
+    config = "vitest.config.js",
     data = [
         "index.js",
         "index.test.js",
@@ -31,9 +30,9 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "cjs_config_test",
-    config = "jest.config.cjs",
+    config = "vitest.config.cjs",
     data = [
         "index.js",
         "index.test.js",
@@ -41,9 +40,9 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "mjs_config_test",
-    config = "jest.config.mjs",
+    config = "vitest.config.mjs",
     data = [
         "index.js",
         "index.test.js",
@@ -51,9 +50,9 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "json_config_test",
-    config = "jest.config.json",
+    config = "vitest.config.json",
     data = [
         "index.js",
         "index.test.js",
@@ -61,7 +60,7 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "gen_config_test",
     config = "gen.config.json",
     data = [
@@ -74,12 +73,12 @@ jest_test(
 genrule(
     name = "gen_config",
     testonly = True,
-    srcs = ["jest.config.json"],
+    srcs = ["vitest.config.json"],
     outs = ["gen.config.json"],
-    cmd = "cp $(location :jest.config.json) \"$@\"",
+    cmd = "cp $(location :vitest.config.json) \"$@\"",
 )
 
-jest_test(
+vitest_test(
     name = "target_config_test",
     config = ":gen_config",
     data = [
@@ -89,9 +88,9 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
-jest_test(
+vitest_test(
     name = "other_target_config_test",
-    config = "//jest/tests/configs:basic",
+    config = "//vitest/tests/configs:basic",
     data = [
         "index.js",
         "index.test.js",

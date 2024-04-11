@@ -1,7 +1,7 @@
-import { id } from './index'
+import { id } from "./index";
 
-global.globalJestEnvInit()
+global.globalVitestEnvInit();
 
-describe('lib', () => {
-    test('returns the id()', () => expect(id).toBeTruthy())
-})
+describe("lib", () => {
+  test("returns the id()", () => expect(id).toBeTruthy());
+});

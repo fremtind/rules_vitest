@@ -1,32 +1,31 @@
-load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
 
 # Case 1: auto_configure_test_sequencer is True (the default) so custom test sequencer will be overridden
-jest_test(
+vitest_test(
     name = "case1_test",
     auto_configure_test_sequencer = True,
-    config = "jest.config.js",
+    config = "vitest.config.mjs",
     data = [
         "index.js",
         "index.test.js",
         "index_2.test.js",
-        "sequencer.js",
+        "sequencer.mjs",
     ],
     log_level = "debug",
     node_modules = "//:node_modules",
     shard_count = 2,
 )
 
-# Case 1: auto_configure_test_sequencer is False so custom test sequencer will be used
-jest_test(
+# Case 2: auto_configure_test_sequencer is False so custom test sequencer will be used
+vitest_test(
     name = "case2_test",
     auto_configure_test_sequencer = False,
-    config = "jest.config.js",
+    config = "vitest.config.mjs",
     data = [
         "index.js",
         "index.test.js",
         "index_2.test.js",
-        "sequencer.js",
-        "//example:node_modules/@jest/test-sequencer",
+        "sequencer.mjs",
     ],
     log_level = "debug",
     node_modules = "//:node_modules",

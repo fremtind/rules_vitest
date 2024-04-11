@@ -1,13 +1,13 @@
 {
-  "homepage": "https://docs.aspect.build/rules/aspect_rules_jest",
+  "homepage": "https://github.com/fremtind/rules_vitest",
   "maintainers": [
     {
-      "name": "Greg Magolan",
-      "email": "greg@aspect.dev",
-      "github": "gregmagolan"
+      "name": "Knut Eirik Leira Hjelle",
+      "email": "knut.hjelle@fremtind.no",
+      "github": "hjellek"
     }
   ],
-  "repository": ["github:aspect-build/rules_jest"],
+  "repository": ["github:fremtind/rules_vitest"],
   "versions": [],
   "yanked_versions": {}
 }

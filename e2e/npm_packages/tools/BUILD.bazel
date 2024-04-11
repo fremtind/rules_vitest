@@ -1,14 +1,14 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 
 js_library(
-    name = "jest",
+    name = "vitest",
     srcs = [
-        "jest-env.js",
-        "jest-env.mjs",
+        "vitest-env.js",
+        "vitest-env.mjs",
     ],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@e2e/lib",
-        "//:node_modules/@jest/globals",
+        "//:node_modules/@vitest/globals",
     ],
 )

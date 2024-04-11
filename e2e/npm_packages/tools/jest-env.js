@@ -1,10 +1,10 @@
 // an import of a third-party package
-const { jest } = require('@jest/globals');
+const { vitest } = require("@vitest/globals");
 
 // a reference to a linked workspace project
-const  { id: e2eLibId } = require('@e2e/lib')
+const { id: e2eLibId } = require("@e2e/lib");
 
-global.globalJestEnvInit = function() {
-    jest.useFakeTimers();
-    global.foo = e2eLibId()
-}
+global.globalVitestEnvInit = function () {
+  vitest.useFakeTimers();
+  global.foo = e2eLibId();
+};

@@ -1,4 +1,0 @@
-{
-  "testEnvironment": "node",
-  "testMatch": ["**/*.test.js"]
-}

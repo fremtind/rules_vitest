@@ -2,7 +2,7 @@ import * as starService from "./service";
 import { exportedMethod } from "./service";
 const requireService = require("./service");
 
-jest.spyOn(requireService, "exportedMethod").mockReturnValue("mock service");
+vitest.spyOn(requireService, "exportedMethod").mockReturnValue("mock service");
 
 test("star import", () => {
   expect(starService.exportedMethod()).toBe("mock service");

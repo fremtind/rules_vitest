@@ -5,9 +5,9 @@ statement from these, that's a bug in our distribution.
 """
 
 # buildifier: disable=bzl-visibility
-load("//jest/private:maybe.bzl", http_archive = "maybe_http_archive")
+load("//vitest/private:maybe.bzl", http_archive = "maybe_http_archive")
 
-def rules_jest_internal_deps():
+def rules_vitest_internal_deps():
     "Fetch deps needed for local development"
     http_archive(
         name = "io_bazel_rules_go",
