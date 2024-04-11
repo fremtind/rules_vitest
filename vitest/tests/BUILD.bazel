@@ -1,0 +1,175 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//vitest:defs.bzl", "vitest_test")
+
+npm_link_all_packages(name = "node_modules")
+
+exports_files([
+    "case3.vitest.config.mjs",
+    "case3.test.js",
+])
+
+# Case 1: Typescript test
+vitest_test(
+    name = "case1",
+    config = "case1/case1.vitest.config.mjs",
+    data = [
+        "case1/case1.test.ts",
+        "case1/tsconfig.json",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 2a: vitest config file in a subdirectory
+vitest_test(
+    name = "case2a",
+    config = "case2/case2.vitest.config.mjs",
+    data = [
+        "case2/case2.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 2b: vitest config file in a subdirectory with chdir
+vitest_test(
+    name = "case2b",
+    chdir = "vitest",
+    config = "case2/case2.vitest.config.mjs",
+    data = [
+        "case2/case2.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 3: Test in root package (see //:case4)
+
+# Case 4: Run test in external repository
+# See e2e/case4.sh
+
+# Case 5: Disable auto_configure_reporters and configure default reporter
+vitest_test(
+    name = "case5",
+    auto_configure_reporters = False,
+    config = "case5.vitest.config.mjs",
+    data = [
+        "case5.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 6: Coverage reporting (see e2e test)
+vitest_test(
+    name = "case6",
+    config = "case6.vitest.config.js",
+    data = [
+        "case6.index.js",
+        "case6.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 7: Coverage reporting, no supplied vitest config file (see e2e test)
+vitest_test(
+    name = "case7",
+    data = [
+        "case7.index.js",
+        "case7.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 8: config in root directory
+vitest_test(
+    name = "case8",
+    config = "//:case8.config",
+    data = [
+        "case8.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 9: native esm modules using .mjs and --experimental-vm-modules
+vitest_test(
+    name = "case9",
+    config = "case9.vitest.config.mjs",
+    data = [
+        "case9.index.mjs",
+        "case9.test.mjs",
+    ],
+    node_modules = "//:node_modules",
+    node_options = [
+        "--experimental-vm-modules",
+    ],
+)
+
+# Case 10: A js_library() config specifying test-time dependencies
+vitest_test(
+    name = "case10",
+    config = ":case10-config",
+    data = [
+        "case10/case10.test.js",
+    ],
+    node_modules = "//:node_modules",
+    snapshots = True,
+)
+
+# Case 10a: case10 with the chdir param to try a different cwd
+vitest_test(
+    name = "case10a",
+    chdir = package_name(),
+    config = ":case10-config",
+    data = [
+        "case10/case10.test.js",
+    ],
+    node_modules = "//:node_modules",
+    snapshots = True,
+)
+
+js_library(
+    name = "case10-config",
+    srcs = [
+        "case10/case10.vitest.config.mjs",
+    ],
+    data = [
+        "case10/case10.setup.js",
+        "case10/case10.setup-import.js",
+        ":node_modules/@aspect-test/c",
+    ],
+)
+
+# Ensure the case10 snapshot target exists
+build_test(
+    name = "case10-update_snapshots_build",
+    targets = [":case10_update_snapshots"],
+)
+
+# Case 11a: vitest config file producing config as function
+vitest_test(
+    name = "case11a",
+    config = "case11/case11a.vitest.config.mjs",
+    data = [
+        "case11/case11.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 11b: vitest config file producing config as async function
+vitest_test(
+    name = "case11b",
+    config = "case11/case11b.vitest.config.mjs",
+    data = [
+        "case11/case11.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 12: Coverage reporting (see e2e test)
+vitest_test(
+    name = "case12",
+    data = [
+        "case12.index.js",
+        "case12.test.js",
+    ],
+    node_modules = "//:node_modules",
+)

@@ -1,15 +1,15 @@
 # Declare the local Bazel workspace.
-workspace(name = "aspect_rules_jest")
+workspace(name = "fremtind_rules_vitest")
 
-load(":internal_deps.bzl", "rules_jest_internal_deps")
+load(":internal_deps.bzl", "rules_vitest_internal_deps")
 
 # Fetch deps needed only locally for development
-rules_jest_internal_deps()
+rules_vitest_internal_deps()
 
-load("//jest:dependencies.bzl", "rules_jest_dependencies")
+load("//vitest:dependencies.bzl", "rules_vitest_dependencies")
 
 # Fetch dependencies which users need as well
-rules_jest_dependencies()
+rules_vitest_dependencies()
 
 load("@aspect_bazel_lib//lib:repositories.bzl", "aspect_bazel_lib_dependencies")
 
@@ -39,7 +39,7 @@ go_register_toolchains(version = "1.19.3")
 
 gazelle_dependencies()
 
-# Test case 4 (see //jest/tests)
+# Test case 4 (see //vitest/tests)
 local_repository(
     name = "case4",
     path = "e2e/case4",

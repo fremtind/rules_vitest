@@ -1,3 +1,4 @@
+const { test, expect } = await import("vitest");
 const index = require(".");
 
 test("it should work", () => {

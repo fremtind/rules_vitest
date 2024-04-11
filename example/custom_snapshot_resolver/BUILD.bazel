@@ -1,23 +1,18 @@
-"""Shows how to write a custom Jest snapshot resolver which customizes the snapshot directory.
+"""Shows how to write a custom Vitest snapshot resolver which customizes the snapshot directory.
 """
 
-load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
 
-jest_test(
+vitest_test(
     name = "test",
-    config = "jest.config.js",
+    config = "vitest.config.mjs",
     data = [
-        ".babelrc.js",
-        "greetings.js",
-        "greetings.test.js",
-        "link.js",
-        "link.test.js",
-        "snapshot_resolver.js",
-        "//example:node_modules/@babel/core",
-        "//example:node_modules/@babel/preset-env",
-        "//example:node_modules/@babel/preset-react",
-        "//example:node_modules/babel-jest",
-        "//example:node_modules/react",
+        "greetings.jsx",
+        "greetings.test.jsx",
+        "link.jsx",
+        "link.test.jsx",
+        "snapshot_resolver.mjs",
+        "//:node_modules/react",
         "//example:node_modules/react-test-renderer",
     ],
     node_modules = "//:node_modules",

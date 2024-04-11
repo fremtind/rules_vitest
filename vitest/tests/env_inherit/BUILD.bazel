@@ -1,0 +1,8 @@
+load("//vitest:defs.bzl", "vitest_test")
+
+vitest_test(
+    name = "test",
+    data = ["env_inherit.test.js"],
+    env_inherit = ["LANG"],
+    node_modules = "//:node_modules",
+)

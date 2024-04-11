@@ -1,11 +1,11 @@
 "Bazel dependencies"
 
 bazel_dep(name = "aspect_bazel_lib", version = "1.32.1", dev_dependency = True)
-bazel_dep(name = "aspect_rules_jest", version = "0.0.0", dev_dependency = True)
+bazel_dep(name = "fremtind_rules_vitest", version = "0.0.0", dev_dependency = True)
 bazel_dep(name = "aspect_rules_js", version = "1.29.2", dev_dependency = True)
 
 local_path_override(
-    module_name = "aspect_rules_jest",
+    module_name = "fremtind_rules_vitest",
     path = "../..",
 )
 
