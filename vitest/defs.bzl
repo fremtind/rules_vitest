@@ -13,6 +13,10 @@ def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_re
 
     vitest_dep = "{}/vitest".format(node_modules)
     vitest_coverage_dep = "{}/@vitest/coverage-v8".format(node_modules)
+    vitest_dir = "{}/vitest/dir".format(node_modules)
+
+    if vitest_dir not in data:
+        data.append(vitest_dir)
 
     if vitest_dep not in data:
         data.append(vitest_dep)
