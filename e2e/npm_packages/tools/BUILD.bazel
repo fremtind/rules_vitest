@@ -9,6 +9,5 @@ js_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@e2e/lib",
-        "//:node_modules/@vitest/globals",
     ],
 )

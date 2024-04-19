@@ -1,10 +1,10 @@
 // an import of a third-party package
-import { vitest } from "@vitest/globals";
+import { vi } from "vitest";
 
 // a reference to a linked workspace project
 import { id as e2eLibId } from "@e2e/lib";
 
 global.globalVitestEnvInit = function () {
-  vitest.useFakeTimers();
+  vi.useFakeTimers();
   global.foo = e2eLibId();
 };

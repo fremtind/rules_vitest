@@ -37,9 +37,8 @@ js_library(
 # Vitest test runners
 vitest_test(
     name = "test_cjs",
-    config = "//:vitest.config.cjs",
+    config = "//:vitest_config",
     data = [
-        "babel.config.json",
         ":lib_tests",
     ],
     node_modules = "//:node_modules",
@@ -47,7 +46,7 @@ vitest_test(
 
 vitest_test(
     name = "test_esm",
-    config = "//:vitest.config.esm",
+    config = "//:vitest_config",
     data = [
         "package.json",  # required for vitest to determine this package .js is esm
         ":lib_tests",

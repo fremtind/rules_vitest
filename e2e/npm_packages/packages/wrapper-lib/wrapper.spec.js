@@ -1,4 +1,5 @@
 import { id } from "./index";
+import { describe, expect, test } from "vitest";
 
 global.globalVitestEnvInit();
 

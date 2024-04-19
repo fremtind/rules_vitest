@@ -3,29 +3,13 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages(name = "node_modules")
 
-# ESM vitest config
 js_library(
-    name = "vitest.config.mjs",
+    name = "vitest_config",
     srcs = [
         "vitest.config.mjs",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//:node_modules/vitest",
-        "//tools:vitest",
-    ],
-)
-
-# CJS vitest config
-js_library(
-    name = "vitest.config.cjs",
-    testonly = True,
-    srcs = [
-        "vitest.config.cjs",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:node_modules/vitest",
         "//tools:vitest",
     ],
 )

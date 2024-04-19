@@ -1,5 +1,6 @@
 import * as assert from "uvu/assert";
 import { id } from "./index";
+import { describe, expect, test } from "vitest";
 
 // Referenced to something setup via the vitest config
 global.globalVitestEnvInit();
