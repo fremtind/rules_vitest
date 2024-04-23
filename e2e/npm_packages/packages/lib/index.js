@@ -1,3 +1,3 @@
-import a from '@aspect-test/a'
+import a from "@aspect-test/a";
 
-export const id = () => 'lib: ' + a.id()
+export const id = () => "lib: " + a.id();

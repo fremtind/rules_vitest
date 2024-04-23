@@ -9,4 +9,4 @@ jobs:
   release:
     uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v2
     with:
-      release_files: rules_jest-*.tar.gz
+      release_files: rules_vitest-*.tar.gz

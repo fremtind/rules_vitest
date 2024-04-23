@@ -4,7 +4,7 @@ load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//jest:defs.bzl", "jest_test")
+load("//vitest:defs.bzl", "vitest_test")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -46,23 +46,23 @@ alias(
     actual = "//tools:format",
 )
 
-# Test case 3: jest config file in root package
+# Test case 3: vitest config file in root package
 # Copy files from tests package to keep the root package clean.
 copy_file(
     name = "case3_test_js",
-    src = "//jest/tests:case3.test.js",
+    src = "//vitest/tests:case3.test.js",
     out = "case3.test.js",
 )
 
 copy_file(
-    name = "case3_jest_config_js",
-    src = "//jest/tests:case3.jest.config.js",
-    out = "case3.jest.config.js",
+    name = "case3_vitest_config_mjs",
+    src = "//vitest/tests:case3.vitest.config.mjs",
+    out = "case3.vitest.config.mjs",
 )
 
-jest_test(
+vitest_test(
     name = "case3",
-    config = "case3.jest.config.js",
+    config = "case3.vitest.config.mjs",
     data = [
         "case3.test.js",
     ],
@@ -71,7 +71,7 @@ jest_test(
 
 copy_to_bin(
     name = "case8.config",
-    srcs = ["test_case8.jest.config.js"],
+    srcs = ["test_case8.vitest.config.js"],
     visibility = ["//visibility:public"],
 )
 
@@ -79,5 +79,5 @@ bzl_library(
     name = "internal_deps",
     srcs = ["internal_deps.bzl"],
     visibility = ["//visibility:public"],
-    deps = ["//jest/private:maybe"],
+    deps = ["//vitest/private:maybe"],
 )

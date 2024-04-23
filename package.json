@@ -1,7 +1,12 @@
 {
   "private": true,
   "devDependencies": {
-    "jest-cli": "29.5.0",
-    "jest-junit": "15.0.0"
+    "@vitest/coverage-istanbul": "1.4.0",
+    "jsdom": "^24.0.0",
+    "vitest": "1.4.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "vite": "^5.2.8"
   }
 }

@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the config + setup files run 1`] = `42`;
+
+exports[`the config + setup files run 2`] = `"function"`;

@@ -1,5 +1,6 @@
 bazel-*
 .bazelrc.user
 **/.terraform/*
+.ijwb/*
 node_modules
 example/node_modules

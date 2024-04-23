@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -o errexit -o nounset -o pipefail
 
-# Case 7: generate a coverage report, no supplied jest config file
-bazel coverage //jest/tests:case7 --instrument_test_targets
+# Case 7: generate a coverage report, no supplied vitest config file
+bazel coverage //vitest/tests:case7 --instrument_test_targets
 
-COVERAGE_FILE="bazel-testlogs/jest/tests/case7/coverage.dat"
+COVERAGE_FILE="bazel-testlogs/vitest/tests/case7/coverage.dat"
 
 if [ ! -f "$COVERAGE_FILE" ]; then
 	echo "Missing coverage file $COVERAGE_FILE"

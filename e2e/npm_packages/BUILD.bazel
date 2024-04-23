@@ -3,29 +3,13 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages(name = "node_modules")
 
-# ESM jest config
 js_library(
-    name = "jest.config.esm",
+    name = "vitest_config",
     srcs = [
-        "jest.config.esm.js",
+        "vitest.config.mjs",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//tools:jest",
-    ],
-)
-
-# CJS jest config
-js_library(
-    name = "jest.config.cjs",
-    testonly = True,
-    srcs = [
-        "jest.config.cjs.js",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:node_modules/@babel/preset-env",
-        "//:node_modules/babel-jest",
-        "//tools:jest",
+        "//tools:vitest",
     ],
 )

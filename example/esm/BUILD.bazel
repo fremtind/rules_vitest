@@ -1,14 +1,11 @@
-load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
 
-jest_test(
+vitest_test(
     name = "test",
-    config = "jest.config.mjs",
+    config = "vitest.config.mjs",
     data = [
         "index.mjs",
         "index.test.mjs",
     ],
     node_modules = "//:node_modules",
-    node_options = [
-        "--experimental-vm-modules",
-    ],
 )
