@@ -7,6 +7,6 @@ on:
 
 jobs:
   release:
-    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v2
+    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@a075541cfb0498f2dcf2caf20d02b6077df4feab
     with:
       release_files: rules_vitest-*.tar.gz
