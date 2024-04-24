@@ -73,7 +73,7 @@ if (autoConfTestSequencer) {
   }
 
   config.test.sequence = {
-    sequencer: (await import(bazelSequencerPath)).default,
+    sequencer: (await import("file://" + bazelSequencerPath)).default,
   };
 }
 
@@ -92,8 +92,9 @@ if (!updateSnapshots) {
 
 // If this is an update snapshot target the configure the Bazel snapshot resolver
 if (updateSnapshots) {
-  let createSnapshotResolver = (await import(bazelSnapshotResolverPath))
-    .createSnapshotResolver;
+  let createSnapshotResolver = (
+    await import("file://" + bazelSnapshotResolverPath)
+  ).createSnapshotResolver;
   config.test.resolveSnapshotPath = createSnapshotResolver(
     config.test.resolveSnapshotPath,
   );
