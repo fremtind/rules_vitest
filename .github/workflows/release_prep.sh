@@ -18,7 +18,7 @@ cat <<EOF
 2. Add to your \`MODULE.bazel\` file:
 
 \`\`\`starlark
-bazel_dep(name = "rules_vitest", version = "${TAG:1}")
+bazel_dep(name = "fremtind_rules_vitest", version = "${TAG:1}")
 \`\`\`
 
 ## Using WORKSPACE
@@ -28,7 +28,7 @@ Paste this snippet into your \`WORKSPACE.bazel\` file:
 \`\`\`starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
-    name = "rules_vitest",
+    name = "fremtind_rules_vitest",
     sha256 = "${SHA}",
     strip_prefix = "${PREFIX}",
     url = "https://github.com/fremtind/rules_vitest/releases/download/${TAG}/${ARCHIVE}",
