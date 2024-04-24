@@ -19,7 +19,6 @@ vitest_test(
 vitest_test(
     name = "filter_test",
     args = [
-        "--testNamePattern",
         "index.test.js",
     ],
     config = "vitest.config.mjs",
