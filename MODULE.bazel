@@ -1,4 +1,4 @@
-"aspect-build/rules_vitest"
+"fremtind/rules_vitest"
 
 module(
     name = "fremtind_rules_vitest",
