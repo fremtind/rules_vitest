@@ -12,6 +12,7 @@ vitest_test(
         ":lib",
         ":tests",
         "//:node_modules/react",
+        "//example:node_modules/@vitejs/plugin-react",
     ],
     node_modules = "//:node_modules",
     # To update snapshots run,
