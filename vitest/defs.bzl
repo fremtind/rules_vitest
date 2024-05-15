@@ -139,7 +139,7 @@ def vitest_test(
     snapshot_data = []
 
     if snapshots == True:
-        snapshots = native.glob(["**/__snapshots__"], exclude_directories = 0)
+        snapshots = native.glob(["**/__snapshots__"], exclude_directories = 0, allow_empty = True)
 
     if type(snapshots) == "string":
         snapshot_data = native.glob(["{}/**".format(snapshots)])
