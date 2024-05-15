@@ -1,5 +1,6 @@
 e2e/
 node_modules
 example/node_modules
+example/local_install/node_modules
 example/snapshots_files/node_modules
 vitest/tests/node_modules

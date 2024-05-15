@@ -1,0 +1,59 @@
+"""Shows that the vitest_test rule can be used with a local install of vite/vitest
+"""
+
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+vitest_test(
+    name = "test",
+    # extra test attributes, regression test for #95
+    timeout = "moderate",
+    config = "vitest.config.mjs",
+    data = [
+        ":lib",
+        ":tests",
+        "//example/local_install:node_modules/@vitejs/plugin-react",
+        "//example/local_install:node_modules/react",
+    ],
+    flaky = False,
+    log_level = "info",
+    node_modules = "//example/local_install:node_modules",
+    # To update snapshots run,
+    #    bazel run //example/snapshots:test_update_snapshots
+    snapshots = True,
+)
+
+# Tests are normally in their own targets.
+js_library(
+    name = "tests",
+    testonly = True,
+    srcs = [
+        #        "greetings.test.jsx",
+        "link.test.jsx",
+    ],
+    deps = [
+        "//example/local_install:node_modules/react",
+        "//example/local_install:node_modules/react-test-renderer",
+    ],
+)
+
+js_library(
+    name = "lib",
+    srcs = [
+        "greetings.jsx",
+        "link.jsx",
+    ],
+    deps = [
+        "//example/local_install:node_modules/react",
+    ],
+)
+
+# TEST: Ensure the {name}_update_snapshots target builds successfully
+build_test(
+    name = "update_snapshots_build",
+    targets = [":test_update_snapshots"],
+)
