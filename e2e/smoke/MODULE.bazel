@@ -13,6 +13,9 @@ bazel_dep(name = "platforms", version = "0.0.9", dev_dependency = True)
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
 npm.npm_translate_lock(
     name = "npm",
+    lifecycle_hooks = {},
+    npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
 )
 use_repo(npm, "npm")

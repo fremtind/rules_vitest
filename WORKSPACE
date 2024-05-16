@@ -47,6 +47,10 @@ npm_translate_lock(
     name = "npm",
     npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",
+    run_lifecycle_hooks = select({
+        "@platforms//os:windows": False,
+        "//conditions:default": True,
+    }),
     verify_node_modules_ignored = "//:.bazelignore",
 )
 
