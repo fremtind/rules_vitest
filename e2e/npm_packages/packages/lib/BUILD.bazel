@@ -7,7 +7,7 @@ npm_link_all_packages(name = "node_modules")
 
 # Basic js with 1 npm dep
 js_library(
-    name = "lib_jslib",
+    name = "lib",
     srcs = ["index.js"],
     deps = [
         ":node_modules/@aspect-test/a",
@@ -16,20 +16,20 @@ js_library(
 
 # Basic npm package wrapping the js
 npm_package(
-    name = "lib",
+    name = "pkg",
     srcs = [
         "package.json",
-        ":lib_jslib",
+        ":lib",
     ],
     visibility = ["//visibility:public"],
 )
 
 # Library of tests
 js_library(
-    name = "lib_tests",
+    name = "test_lib",
     srcs = glob(["*.spec.js"]),
     deps = [
-        ":lib_jslib",
+        ":lib",
         ":node_modules/uvu",
     ],
 )
@@ -39,7 +39,7 @@ vitest_test(
     name = "test_cjs",
     config = "//:vitest_config",
     data = [
-        ":lib_tests",
+        ":test_lib",
     ],
     node_modules = "//:node_modules",
 )
@@ -49,7 +49,7 @@ vitest_test(
     config = "//:vitest_config",
     data = [
         "package.json",  # required for vitest to determine this package .js is esm
-        ":lib_tests",
+        ":test_lib",
     ],
     node_modules = "//:node_modules",
     node_options = [

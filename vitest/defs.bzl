@@ -24,11 +24,7 @@ def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_re
         auto_configure_reporters = auto_configure_reporters,
         name = name,
         enable_runfiles = select({
-            "@aspect_rules_js//js/private:enable_runfiles": True,
-            "//conditions:default": False,
-        }),
-        unresolved_symlinks_enabled = select({
-            "@aspect_rules_js//js/private:experimental_allow_unresolved_symlinks": True,
+            "@aspect_bazel_lib//lib:enable_runfiles": True,
             "//conditions:default": False,
         }),
         data = data,
@@ -143,10 +139,10 @@ def vitest_test(
     snapshot_data = []
 
     if snapshots == True:
-        snapshots = native.glob(["**/__snapshots__"], exclude_directories = 0)
+        snapshots = native.glob(["**/__snapshots__"], exclude_directories = 0, allow_empty = True)
 
     if type(snapshots) == "string":
-        snapshot_data = native.glob(["{}/**".format(snapshots)])
+        snapshot_data = native.glob(["{}/**".format(snapshots)], allow_empty = True)
     elif type(snapshots) == "list":
         for snapshot in snapshots:
             snapshot_label = to_label(snapshot)
@@ -161,7 +157,7 @@ def vitest_test(
             if snapshot_label.name.endswith(snapshots_ext):
                 snapshot_data.append(snapshot_label)
             else:
-                snapshot_data.extend(native.glob(["{}/**".format(snapshot)]))
+                snapshot_data.extend(native.glob(["{}/**".format(snapshot)], allow_empty = True))
 
     elif snapshots != False and snapshots != None:
         msg = "snapshots expected to be a boolean, string or list but got {}".format(snapshots)

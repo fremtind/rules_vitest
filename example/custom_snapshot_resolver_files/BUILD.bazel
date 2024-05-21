@@ -15,6 +15,7 @@ vitest_test(
         "link.test.jsx",
         "snapshot_resolver.mjs",
         "//:node_modules/react",
+        "//example:node_modules/@vitejs/plugin-react",
         "//example:node_modules/react-test-renderer",
     ],
     node_modules = "//:node_modules",
