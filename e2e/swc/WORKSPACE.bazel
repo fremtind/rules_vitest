@@ -26,12 +26,11 @@ npm_repositories()
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# TODO: FIX
 http_archive(
     name = "aspect_rules_swc",
-    integrity = "sha256-+BUkMlB7mYzuSBEuVWLM08zlh8BXnwsKSlgkBqFjF7Q=",
-    strip_prefix = "rules_swc-3843ada2222c537e3c1982dec16b8d3d62a9da49",
-    url = "https://github.com/aspect-build/rules_swc/archive/3843ada2222c537e3c1982dec16b8d3d62a9da49/3843ada2222c537e3c1982dec16b8d3d62a9da49.tar.gz",
+    sha256 = "d63d7b283249fa942f78d2716ecff3edbdc10104ee1b9a6b9464ece471ef95ea",
+    strip_prefix = "rules_swc-2.0.0",
+    url = "https://github.com/aspect-build/rules_swc/releases/download/v2.0.0/rules_swc-v2.0.0.tar.gz",
 )
 
 load("@aspect_rules_swc//swc:dependencies.bzl", "rules_swc_dependencies")
