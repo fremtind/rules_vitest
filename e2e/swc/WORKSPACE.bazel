@@ -1,0 +1,46 @@
+local_repository(
+    name = "fremtind_rules_vitest",
+    path = "../..",
+)
+
+load("@fremtind_rules_vitest//vitest:dependencies.bzl", "rules_vitest_dependencies")
+
+rules_vitest_dependencies()
+
+load("@aspect_rules_js//js:toolchains.bzl", "DEFAULT_NODE_VERSION", "rules_js_register_toolchains")
+
+rules_js_register_toolchains(node_version = DEFAULT_NODE_VERSION)
+
+load("@aspect_rules_js//npm:repositories.bzl", "npm_translate_lock")
+
+npm_translate_lock(
+    name = "npm",
+    npmrc = "//:.npmrc",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+
+npm_repositories()
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# TODO: FIX
+http_archive(
+    name = "aspect_rules_swc",
+    integrity = "sha256-+BUkMlB7mYzuSBEuVWLM08zlh8BXnwsKSlgkBqFjF7Q=",
+    strip_prefix = "rules_swc-3843ada2222c537e3c1982dec16b8d3d62a9da49",
+    url = "https://github.com/aspect-build/rules_swc/archive/3843ada2222c537e3c1982dec16b8d3d62a9da49/3843ada2222c537e3c1982dec16b8d3d62a9da49.tar.gz",
+)
+
+load("@aspect_rules_swc//swc:dependencies.bzl", "rules_swc_dependencies")
+
+rules_swc_dependencies()
+
+load("@aspect_rules_swc//swc:repositories.bzl", "LATEST_SWC_VERSION", "swc_register_toolchains")
+
+swc_register_toolchains(
+    name = "swc",
+    swc_version = LATEST_SWC_VERSION,
+)
