@@ -1,4 +1,5 @@
 packages:
   - "example"
   - "example/snapshots_files"
+  - "example/snapshots_mjs"
   - "vitest/tests"

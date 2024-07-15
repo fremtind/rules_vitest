@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -26,6 +26,22 @@ importers:
         version: 1.4.0(jsdom@24.0.0)
 
   example:
+    dependencies:
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.2.8)
+      '@vitest/runner':
+        specifier: ^1.5.0
+        version: 1.5.0
+      react-test-renderer:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+
+  example/snapshots_mjs:
     dependencies:
       react:
         specifier: 18.2.0

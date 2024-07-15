@@ -1,0 +1,57 @@
+"""Shows how to setup vitest_test to update snapshots.
+"""
+
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
+
+vitest_test(
+    name = "test",
+    config = "vitest.config.mjs",
+    data = [
+        "package.json",
+        ":lib",
+        ":tests",
+        "//example:node_modules/@vitejs/plugin-react",
+        "//example:node_modules/react",
+    ],
+    log_level = "info",
+    node_modules = "//:node_modules",
+    node_options = [
+        "--experimental-vm-modules",
+    ],
+    # To update snapshots run,
+    #    bazel run //example/snapshots_mjs:test_update_snapshots
+    snapshots = True,
+)
+
+# Tests are normally in their own targets.
+js_library(
+    name = "tests",
+    testonly = True,
+    srcs = [
+        "greetings.test.jsx",
+        "link.test.jsx",
+    ],
+    deps = [
+        "//example:node_modules/react",
+        "//example:node_modules/react-test-renderer",
+    ],
+)
+
+js_library(
+    name = "lib",
+    srcs = [
+        "greetings.jsx",
+        "link.jsx",
+    ],
+    deps = [
+        "//example:node_modules/react",
+    ],
+)
+
+# TEST: Ensure the {name}_update_snapshots target builds successfully
+build_test(
+    name = "update_snapshots_build",
+    targets = [":test_update_snapshots"],
+)

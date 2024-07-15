@@ -6,12 +6,22 @@ module(
     compatibility_level = 1,
 )
 
-bazel_dep(name = "aspect_bazel_lib", version = "1.32.1")
-bazel_dep(name = "aspect_rules_js", version = "1.29.2")
+bazel_dep(name = "aspect_bazel_lib", version = "1.42.3")
+bazel_dep(name = "aspect_rules_js", version = "1.42.3")
 bazel_dep(name = "bazel_skylib", version = "1.4.1")
-bazel_dep(name = "rules_nodejs", version = "5.8.2")
+bazel_dep(name = "rules_nodejs", version = "5.8.5")
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "20.14.0")
+
 bazel_dep(name = "bazel_features", version = "1.9.0")
 
 bazel_dep(name = "gazelle", version = "0.29.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.1", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "6.3.3", dev_dependency = True)
+
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
+
+# Allows developers to use the matching pnpm version, for example:
+# bazel run -- @pnpm --dir /home/runner/work/rules_js/rules_js install
+use_repo(pnpm, "pnpm")
