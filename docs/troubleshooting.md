@@ -6,8 +6,10 @@
 
 ### Resolving modules from vite and vitest
 
-`vite`, `vitest`, `react (optional)`, `jsdom (optional)` must be installed at root
-We have not figured out why yet, but it seems to be an issue with [ESM imports under Bazel](https://github.com/aspect-build/rules_js/issues/362)
+`vite`, `vitest`, `react (optional)`, `jsdom (optional)` must be installed from the same `package.json` file
+It seems to be related to [ESM imports under Bazel](https://github.com/aspect-build/rules_js/issues/362)
+
+The [local_install](../example/local_install) example shows that it works when all dependencies are installed from the same `package.json` file, even in a subdirectory
 
 ## `rules_js` virtual store
 

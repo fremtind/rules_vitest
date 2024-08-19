@@ -20,7 +20,9 @@ See [vitest_test](docs/vitest_test.md) API documentation and the example usages 
 
 ## Troubleshooting and common challenges
 
-⚠️ `vite`, `vitest`, `react (optional)`, `jsdom (optional)` must be installed at root ⚠️
-We have not figured out why yet, but it seems to be an issue with [ESM imports under Bazel](https://github.com/aspect-build/rules_js/issues/362)
+⚠️ `vite`, `vitest`, `react (optional)`, `jsdom (optional)` must be included from the same `package.json` file ⚠️
+It seems to be related to [ESM imports under Bazel](https://github.com/aspect-build/rules_js/issues/362)
+
+The [local_install](example/local_install) example shows that it works when all dependencies are installed from the same `package.json` file, even in a subdirectory
 
 For troubleshooting and common challenges, see [docs/troubleshooting.md](docs/troubleshooting.md).
