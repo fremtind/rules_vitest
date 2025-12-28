@@ -1,6 +1,7 @@
 # This load statement must be in the docs/ package rather than anything users depend on
 # so that the dependency on stardoc doesn't leak to them.
 load("@aspect_bazel_lib//lib:docs.bzl", "stardoc_with_diff_test", "update_docs")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 stardoc_with_diff_test(
     name = "vitest_test",
