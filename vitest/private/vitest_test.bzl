@@ -90,10 +90,7 @@ def _impl(ctx):
         "'" + paths.join(unwind_chdir_prefix, generated_config.short_path) + "'",
     ])
 
-    fixed_env = {
-        "VITEST_MAX_THREADS": "2",
-        "VITEST_MIN_THREADS": "1",
-    }
+    fixed_env = {}
 
     if ctx.attr.update_snapshots:
         fixed_args.append("--update=true")
