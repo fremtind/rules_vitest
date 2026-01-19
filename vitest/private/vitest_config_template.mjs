@@ -5,6 +5,7 @@ const updateSnapshots = !!process.env.VITEST_TEST__UPDATE_SNAPSHOTS;
 const coverageEnabled = !!process.env.COVERAGE_DIR;
 const autoConfReporters = !!"{{AUTO_CONF_REPORTERS}}";
 const autoConfTestSequencer = !!"{{AUTO_CONF_TEST_SEQUENCER}}";
+const coverageProvider = "{{COVERAGE_PROVIDER}}";
 const userConfigShortPath = "{{USER_CONFIG_SHORT_PATH}}";
 const generatedConfigShortPath = "{{GENERATED_CONFIG_SHORT_PATH}}";
 const projectRoot = path.join(
@@ -116,24 +117,24 @@ if (coverageEnabled) {
   config.test.coverage = {
     ...(config.test.coverage || {}),
     enabled: true,
-    provider: "istanbul",
+    provider: coverageProvider,
     reportsDirectory: coverageDirectory,
     reporter: ["text", ["lcov", { file: coverageFile, projectRoot }]],
   };
 
   // Only generate coverage for files declared in the COVERAGE_MANIFEST
   config.test.coverage.include = fs
-    .readFileSync(process.env.COVERAGE_MANIFEST)
-    .toString("utf8")
-    .split("\n")
-    .filter((f) => f !== "")
-    .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
+      .readFileSync(process.env.COVERAGE_MANIFEST)
+      .toString("utf8")
+      .split("\n")
+      .filter((f) => f !== "")
+      .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
 }
 
 if (process.env.JS_BINARY__LOG_DEBUG) {
   console.error(
-    "DEBUG: fremtind_rules_vitest[vitest_test]: config:",
-    JSON.stringify(config, null, 2),
+      "DEBUG: fremtind_rules_vitest[vitest_test]: config:",
+      JSON.stringify(config, null, 2),
   );
 }
 

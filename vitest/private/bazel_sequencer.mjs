@@ -31,9 +31,10 @@ class BazelSequencer extends BaseSequencer {
     const { config } = this.ctx;
 
     const shardSize = Math.ceil(files.length / shardCount);
-    const shardStart = shardSize * shardIndex;
-    const shardEnd = shardSize * (shardIndex + 1);
-
+    const rawStart = shardSize * shardIndex;
+    const rawEnd = shardSize * (shardIndex + 1);
+    const shardStart = Number.isFinite(rawStart) ? rawStart : 0;
+    const shardEnd = Number.isFinite(rawEnd) ? rawEnd : files.length;
     return Promise.resolve(
       [...files]
         .map((spec) => {

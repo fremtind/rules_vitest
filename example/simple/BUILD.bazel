@@ -87,3 +87,23 @@ vitest_test(
     ],
     node_modules = "//:node_modules",
 )
+
+vitest_test(
+    name = "istanbul_coverage_test",
+    coverage_provider = "istanbul",
+    data = [
+        "index.js",
+        "index.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+vitest_test(
+    name = "v8_coverage_test",
+    coverage_provider = "v8",
+    data = [
+        "index.js",
+        "index.test.js",
+    ],
+    node_modules = "//:node_modules",
+)
