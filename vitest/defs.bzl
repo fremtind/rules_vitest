@@ -8,11 +8,11 @@ load("//vitest/private:vitest_test.bzl", vitest_test_rule = "vitest_test")
 
 UPDATE_SNAPSHOTS_TARGET_SUFFIX = "_update_snapshots"
 
-def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_reporters, **kwargs):
+def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_reporters, coverage_provider, **kwargs):
     data = kwargs.pop("data", [])
 
     vitest_dep = "{}/vitest".format(node_modules)
-    vitest_coverage_dep = "{}/@vitest/coverage-istanbul".format(node_modules)
+    vitest_coverage_dep = "{}/@vitest/coverage-{}".format(node_modules, coverage_provider)
 
     if vitest_dep not in data:
         data.append(vitest_dep)
@@ -40,6 +40,7 @@ def vitest_test(
         snapshots = False,
         auto_configure_reporters = True,
         auto_configure_test_sequencer = True,
+        coverage_provider = "istanbul",
         snapshots_ext = ".snap",
         quiet_snapshot_updates = False,
         timeout = None,
@@ -53,7 +54,9 @@ def vitest_test(
         name: A unique name for this target.
 
         node_modules: Label pointing to the linked node_modules target where vitest is linked, e.g. `//:node_modules`.
-            `@vitest/coverage-v8` is also required by default when `auto_configure_reporters` is True.
+            The coverage provider package (`@vitest/coverage-istanbul` or `@vitest/coverage-v8`) is also required
+            when `auto_configure_reporters` is True. The specific package depends on the `coverage_provider` parameter.
+            By default, `@vitest/coverage-istanbul` is used.
 
             NB: Only the required npm packages are included in data from `//:node_modules`. Other npm packages
             are not included as inputs.
@@ -120,6 +123,10 @@ def vitest_test(
             Any custom test.sequence.sequencer value in a user Vitest `config` will be overridden.
 
             See https://vitest.dev/config/#sequence-sequencer for more information on Vitest test.sequence.sequencer config option.
+
+        coverage_provider: The coverage provider to use. Valid values are "istanbul" (default) or "v8".
+            This determines which coverage package dependency is automatically added: either `@vitest/coverage-istanbul`
+            or `@vitest/coverage-v8` when `auto_configure_reporters` is True.
 
         snapshots_ext: The expected extensions for snapshot files. Defaults to `.snap`, the Vitest default.
 
@@ -203,6 +210,7 @@ def vitest_test(
         data = data + snapshot_data,
         auto_configure_reporters = auto_configure_reporters,
         auto_configure_test_sequencer = auto_configure_test_sequencer,
+        coverage_provider = coverage_provider,
         tags = tags,
         size = size,
         bazel_sequencer = bazel_sequencer,
@@ -224,6 +232,7 @@ def vitest_test(
             data = data,
             auto_configure_reporters = auto_configure_reporters,
             auto_configure_test_sequencer = auto_configure_test_sequencer,
+            coverage_provider = coverage_provider,
             update_snapshots = True,
             quiet_snapshot_updates = quiet_snapshot_updates,
             entry_point = entry_point,
