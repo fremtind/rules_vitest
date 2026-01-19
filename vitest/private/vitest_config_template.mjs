@@ -5,6 +5,7 @@ const updateSnapshots = !!process.env.VITEST_TEST__UPDATE_SNAPSHOTS;
 const coverageEnabled = !!process.env.COVERAGE_DIR;
 const autoConfReporters = !!"{{AUTO_CONF_REPORTERS}}";
 const autoConfTestSequencer = !!"{{AUTO_CONF_TEST_SEQUENCER}}";
+const coverageProvider = "{{COVERAGE_PROVIDER}}";
 const userConfigShortPath = "{{USER_CONFIG_SHORT_PATH}}";
 const generatedConfigShortPath = "{{GENERATED_CONFIG_SHORT_PATH}}";
 const projectRoot = path.join(
@@ -116,7 +117,7 @@ if (coverageEnabled) {
   config.test.coverage = {
     ...(config.test.coverage || {}),
     enabled: true,
-    provider: "istanbul",
+    provider: coverageProvider,
     reportsDirectory: coverageDirectory,
     reporter: ["text", ["lcov", { file: coverageFile, projectRoot }]],
   };

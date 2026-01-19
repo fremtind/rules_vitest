@@ -22,6 +22,7 @@ def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_re
 
     vitest_rule(
         auto_configure_reporters = auto_configure_reporters,
+        coverage_provider = coverage_provider,
         name = name,
         enable_runfiles = select({
             "@aspect_bazel_lib//lib:enable_runfiles": True,
