@@ -145,6 +145,7 @@ def _impl(ctx):
             coverage_common.instrumented_files_info(
                 ctx,
                 source_attributes = ["data"],
+                dependency_attributes = ["data"],
                 extensions = [
                     "cjs",
                     "cjx",

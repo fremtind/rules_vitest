@@ -122,20 +122,21 @@ if (coverageEnabled) {
     reporter: ["text", ["lcov", { file: coverageFile, projectRoot }]],
   };
 
-  // Only generate coverage for files declared in the COVERAGE_MANIFEST
-  config.test.coverage.include = fs
-    .readFileSync(process.env.COVERAGE_MANIFEST)
-    .toString("utf8")
-    .split("\n")
-    .filter((f) => f !== "")
-    .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
+  config.test.include = ['**/*.{test,spec}.?(c|m)[jt]s?(x)'];
+   const nonTestFiles = fs
+       .readFileSync(process.env.COVERAGE_MANIFEST)
+       .toString("utf8")
+       .split("\n")
+       .filter((f) => f !== "")
+       .filter((f) => !f.includes("test"))
+       .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
+
+  config.test.coverage.include = nonTestFiles;
 }
 
-if (process.env.JS_BINARY__LOG_DEBUG) {
-  console.error(
+console.error(
     "DEBUG: fremtind_rules_vitest[vitest_test]: config:",
     JSON.stringify(config, null, 2),
-  );
-}
+);
 
 export default config;
