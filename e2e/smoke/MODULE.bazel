@@ -17,3 +17,5 @@ npm.npm_translate_lock(
     pnpm_lock = "//:pnpm-lock.yaml",
 )
 use_repo(npm, "npm")
+
+bazel_dep(name = "rules_shell", version = "0.6.1")

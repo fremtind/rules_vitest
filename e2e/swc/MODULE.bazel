@@ -19,3 +19,5 @@ npm.npm_translate_lock(
     verify_node_modules_ignored = "//:.bazelignore",
 )
 use_repo(npm, "npm")
+
+bazel_dep(name = "rules_shell", version = "0.6.1")
