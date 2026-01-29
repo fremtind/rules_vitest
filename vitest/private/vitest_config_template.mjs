@@ -8,8 +8,10 @@ const autoConfTestSequencer = !!"{{AUTO_CONF_TEST_SEQUENCER}}";
 const userConfigShortPath = "{{USER_CONFIG_SHORT_PATH}}";
 const generatedConfigShortPath = "{{GENERATED_CONFIG_SHORT_PATH}}";
 
+const runfiles = process.env.RUNFILES || process.env.RUNFILES_DIR;
+
 const projectRoot = path.join(
-  process.env.RUNFILES_DIR,
+  runfiles,
   process.env.JS_BINARY__WORKSPACE,
 );
 
