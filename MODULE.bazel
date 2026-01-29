@@ -14,6 +14,7 @@ bazel_dep(name = "rules_nodejs", version = "6.2.0")
 bazel_dep(name = "rules_shell", version = "0.6.1")
 bazel_dep(name = "aspect_rules_lint", version = "1.4.5")
 bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "bazel_lib", version = "3.0.0")
 
 ####### Dev dependencies ########
 

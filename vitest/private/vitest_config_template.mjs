@@ -8,10 +8,14 @@ const autoConfTestSequencer = !!"{{AUTO_CONF_TEST_SEQUENCER}}";
 const coverageProvider = "{{COVERAGE_PROVIDER}}";
 const userConfigShortPath = "{{USER_CONFIG_SHORT_PATH}}";
 const generatedConfigShortPath = "{{GENERATED_CONFIG_SHORT_PATH}}";
+
+const runfiles = process.env.RUNFILES || process.env.RUNFILES_DIR;
+
 const projectRoot = path.join(
-  process.env.RUNFILES,
+  runfiles,
   process.env.JS_BINARY__WORKSPACE,
 );
+
 
 // Glob pattern paths for which files to cover must be relative to this
 // vitest config file in runfiles.
