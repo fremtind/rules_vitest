@@ -115,6 +115,17 @@ def _impl(ctx):
         fixed_env = fixed_env,
     )
 
+    print(launcher.runfiles)
+    filtered_launcher_runfiles = []
+    for file in launcher.runfiles.files.to_list():
+        print("  - %s" % file.short_path)
+        if file.short_path.count("nodejs") > 0:
+            filtered_launcher_runfiles.append(file)
+        if file.short_path.count("test_node") > 0:
+            filtered_launcher_runfiles.append(file)
+        if file.short_path.count("node-patches") > 0:
+            filtered_launcher_runfiles.append(file)
+
     files = ctx.files.data[:]
     if user_config:
         files.append(user_config)
@@ -124,16 +135,9 @@ def _impl(ctx):
     files.append(ctx.file.bazel_snapshot_resolver)
 
     runfiles = ctx.runfiles(
-        files = files,
-        transitive_files = js_lib_helpers.gather_files_from_js_infos(
-            targets = ctx.attr.data + [ctx.attr.config] if ctx.attr.config else ctx.attr.data,
-            include_sources = ctx.attr.include_sources,
-            include_types = ctx.attr.include_types,
-            include_transitive_sources = ctx.attr.include_transitive_sources,
-            include_transitive_types = ctx.attr.include_transitive_types,
-            include_npm_sources = ctx.attr.include_npm_sources,
-        ),
-    ).merge(launcher.runfiles).merge_all([
+        files = files + filtered_launcher_runfiles,
+        transitive_files = None,
+    ).merge_all([
         target[DefaultInfo].default_runfiles
         for target in ctx.attr.data
     ])
