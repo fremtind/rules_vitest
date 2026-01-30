@@ -1,6 +1,3 @@
-# Declare the local Bazel workspace.
-workspace(name = "fremtind_rules_vitest")
-
 load(":internal_deps.bzl", "rules_vitest_internal_deps")
 
 # Fetch deps needed only locally for development
@@ -20,19 +17,7 @@ load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-
-############################################
-# Gazelle, for generating bzl_library targets
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
-go_rules_dependencies()
-
-go_register_toolchains(version = "1.19.3")
-
-gazelle_dependencies()
-
-# Test case 4 (see //vitest/tests)
+# Test case 4 (see //jest/tests)
 local_repository(
     name = "case4",
     path = "e2e/case4",
@@ -61,6 +46,14 @@ load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
 
 stardoc_repositories()
 
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+
+rules_jvm_external_deps()
+
+load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+
+rules_jvm_external_setup()
+
 load("@io_bazel_stardoc//:deps.bzl", "stardoc_external_deps")
 
 stardoc_external_deps()
@@ -78,24 +71,29 @@ load("@buildifier_prebuilt//:defs.bzl", "buildifier_prebuilt_register_toolchains
 
 buildifier_prebuilt_register_toolchains()
 
+load("@bazel_features//:deps.bzl", "bazel_features_deps")
+
+bazel_features_deps()
+
 # rules_lint
 load(
     "@aspect_rules_lint//format:repositories.bzl",
-    "fetch_shfmt",
+    "rules_lint_dependencies",
 )
 
-fetch_shfmt()
+rules_lint_dependencies()
+
+load("@rules_multitool//multitool:multitool.bzl", "multitool")
+
+multitool(
+    name = "multitool",
+    lockfiles = [
+        "@aspect_rules_lint//format:multitool.lock.json",
+        "@aspect_rules_lint//lint:multitool.lock.json",
+    ],
+)
 
 # rules_shell
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-http_archive(
-    name = "rules_shell",
-    sha256 = "e6b87c89bd0b27039e3af2c5da01147452f240f75d505f5b6880874f31036307",
-    strip_prefix = "rules_shell-0.6.1",
-    url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.6.1/rules_shell-v0.6.1.tar.gz",
-)
-
 load("@rules_shell//shell:repositories.bzl", "rules_shell_dependencies", "rules_shell_toolchains")
 
 rules_shell_dependencies()
