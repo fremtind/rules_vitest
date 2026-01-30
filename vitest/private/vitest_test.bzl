@@ -9,6 +9,7 @@ _attrs = dicts.add(js_binary_lib.attrs, {
     "config": attr.label(allow_single_file = [".js", ".ts", ".cjs", ".mjs", ".mts", ".json"]),
     "auto_configure_reporters": attr.bool(default = True),
     "auto_configure_test_sequencer": attr.bool(default = True),
+    "coverage_provider": attr.string(default = "istanbul"),
     "update_snapshots": attr.bool(default = False),
     "quiet_snapshot_updates": attr.bool(default = False),
     "entry_point": attr.label(mandatory = True),
@@ -54,6 +55,7 @@ def _impl(ctx):
             "{{USER_CONFIG_SHORT_PATH}}": user_config.short_path if user_config else "",
             "{{AUTO_CONF_REPORTERS}}": "1" if ctx.attr.auto_configure_reporters else "",
             "{{AUTO_CONF_TEST_SEQUENCER}}": "1" if ctx.attr.auto_configure_test_sequencer else "",
+            "{{COVERAGE_PROVIDER}}": ctx.attr.coverage_provider,
             "{{BAZEL_SEQUENCER_SHORT_PATH}}": ctx.file.bazel_sequencer.short_path,
             "{{BAZEL_SNAPSHOT_REPORTER_SHORT_PATH}}": ctx.file.bazel_snapshot_reporter.short_path,
             "{{BAZEL_SNAPSHOT_RESOLVER_SHORT_PATH}}": ctx.file.bazel_snapshot_resolver.short_path,
@@ -88,10 +90,7 @@ def _impl(ctx):
         "'" + paths.join(unwind_chdir_prefix, generated_config.short_path) + "'",
     ])
 
-    fixed_env = {
-        "VITEST_MAX_THREADS": "2",
-        "VITEST_MIN_THREADS": "1",
-    }
+    fixed_env = {}
 
     if ctx.attr.update_snapshots:
         fixed_args.append("--update=true")
@@ -100,12 +99,10 @@ def _impl(ctx):
     if ctx.attr.quiet_snapshot_updates:
         fixed_env["JS_BINARY__SILENT_ON_SUCCESS"] = "1"
 
-    shard_count = getattr(ctx.attr, "shard_count")
-    if shard_count > 0:
-        fixed_args.extend([
-            "--shard",
-            "1/1",  # NOT IN USE, but required by vitest. Actual value resolved in BazelSequencer
-        ])
+    fixed_args.extend([
+        "--shard",
+        "1/1",  # NOT IN USE, but required by vitest. Actual value resolved in BazelSequencer
+    ])
 
     launcher = js_binary_lib.create_launcher(
         ctx,
