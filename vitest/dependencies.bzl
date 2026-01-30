@@ -2,6 +2,7 @@
 
 load("//vitest/private:maybe.bzl", http_archive = "maybe_http_archive")
 
+# buildifier: disable=function-docstring
 def rules_vitest_dependencies():
     http_archive(
         name = "bazel_skylib",
@@ -28,4 +29,18 @@ def rules_vitest_dependencies():
         sha256 = "87c6171c5be7b69538d4695d9ded29ae2626c5ed76a9adeedce37b63c73bef67",
         strip_prefix = "rules_nodejs-6.2.0",
         url = "https://github.com/bazelbuild/rules_nodejs/releases/download/v6.2.0/rules_nodejs-v6.2.0.tar.gz",
+    )
+
+    http_archive(
+        name = "bazel_features",
+        sha256 = "f3082bfcdca73dc77dcd68faace806135a2e08c230b02b1d9fbdbd7db9d9c450",
+        strip_prefix = "bazel_features-0.1.0",
+        url = "https://github.com/bazel-contrib/bazel_features/releases/download/v0.1.0/bazel_features-v0.1.0.tar.gz",
+    )
+
+    http_archive(
+        name = "rules_shell",
+        sha256 = "e6b87c89bd0b27039e3af2c5da01147452f240f75d505f5b6880874f31036307",
+        strip_prefix = "rules_shell-0.6.1",
+        url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.6.1/rules_shell-v0.6.1.tar.gz",
     )
