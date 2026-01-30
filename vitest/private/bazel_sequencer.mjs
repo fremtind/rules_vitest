@@ -29,27 +29,28 @@ class BazelSequencer extends BaseSequencer {
 
   shard(files) {
     const { config } = this.ctx;
-    const nonSliced = [...files]
+
+    const shardSize = Math.ceil(files.length / shardCount);
+    const shardStart = shardSize * shardIndex;
+    const shardEnd = shardSize * (shardIndex + 1);
+    console.log("shardSize:", shardSize, "shardStart:", shardStart, "shardEnd:", shardEnd);
+    return Promise.resolve(
+      [...files]
         .map((spec) => {
-          const specPath = spec.moduleId;
+          const fullPath = resolve(
+            config.root.replace(/\\/g, "/"),
+            spec[1].replace(/\\/g, "/"),
+          );
+          const specPath = fullPath?.slice(config.root.length);
           return {
             spec,
             hash: createHash("sha1").update(specPath).digest("hex"),
           };
         })
         .sort((a, b) => (a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0))
-        .map(({ spec }) => spec)
-    if (!shardCount || shardCount === 1) {
-        return Promise.resolve(nonSliced);
-    } else {
-      const shardSize = Math.ceil(files.length / shardCount);
-      const shardStart = shardSize * shardIndex;
-      const shardEnd = shardSize * (shardIndex + 1);
-      const filesFromSequencer = nonSliced
-          .slice(shardStart, shardEnd);
-      console.log(filesFromSequencer);
-      return Promise.resolve(filesFromSequencer);
-    }
+        .slice(shardStart, shardEnd)
+        .map(({ spec }) => spec),
+    );
   }
 
   sort(files) {

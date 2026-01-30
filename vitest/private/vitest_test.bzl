@@ -99,12 +99,10 @@ def _impl(ctx):
     if ctx.attr.quiet_snapshot_updates:
         fixed_env["JS_BINARY__SILENT_ON_SUCCESS"] = "1"
 
-    shard_count = getattr(ctx.attr, "shard_count")
-    if shard_count > 0:
-        fixed_args.extend([
-            "--shard",
-            "1/1",  # NOT IN USE, but required by vitest. Actual value resolved in BazelSequencer
-        ])
+    fixed_args.extend([
+        "--shard",
+        "1/1",  # NOT IN USE, but required by vitest. Actual value resolved in BazelSequencer
+    ])
 
     launcher = js_binary_lib.create_launcher(
         ctx,
@@ -145,7 +143,6 @@ def _impl(ctx):
             coverage_common.instrumented_files_info(
                 ctx,
                 source_attributes = ["data"],
-                dependency_attributes = ["data"],
                 extensions = [
                     "cjs",
                     "cjx",
