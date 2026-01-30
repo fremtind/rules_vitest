@@ -6,6 +6,5 @@ write_aspect_bazelrc_presets(
     presets = [
         "bazel6",
         "bazel7",
-        "bazel8",
     ],
 )
