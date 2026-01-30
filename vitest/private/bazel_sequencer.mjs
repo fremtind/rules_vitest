@@ -9,54 +9,63 @@ const shardIndex = Number(process.env.TEST_SHARD_INDEX);
 const shardStatusFile = process.env.TEST_SHARD_STATUS_FILE;
 
 class BazelSequencer extends BaseSequencer {
-  ctx;
+    ctx;
 
-  constructor(ctx) {
-    super(ctx);
-    this.ctx = ctx;
-    // Sharding protocol:
-    // Tell Bazel that this test runner supports sharding by updating the last modified date of the
-    // magic file
-    if (shardCount) {
-      fs.open(shardStatusFile, "w", (err, fd) => {
-        if (err) throw err;
-        fs.close(fd, (err) => {
-          if (err) throw err;
-        });
-      });
+    constructor(ctx) {
+        super(ctx);
+        this.ctx = ctx;
+        // Sharding protocol:
+        // Tell Bazel that this test runner supports sharding by updating the last modified date of the
+        // magic file
+        if (shardCount) {
+            fs.open(shardStatusFile, "w", (err, fd) => {
+                if (err) throw err;
+                fs.close(fd, (err) => {
+                    if (err) throw err;
+                });
+            });
+        }
     }
-  }
 
-  shard(files) {
-    const { config } = this.ctx;
+    shard(files) {
+        if (!shardCount) {
+            return Promise.resolve(files);
+        }
+        const { config } = this.ctx;
 
-    const shardSize = Math.ceil(files.length / shardCount);
-    const rawStart = shardSize * shardIndex;
-    const rawEnd = shardSize * (shardIndex + 1);
-    const shardStart = Number.isFinite(rawStart) ? rawStart : 0;
-    const shardEnd = Number.isFinite(rawEnd) ? rawEnd : files.length;
-    return Promise.resolve(
-      [...files]
-        .map((spec) => {
-          const fullPath = resolve(
-            config.root.replace(/\\/g, "/"),
-            spec[1].replace(/\\/g, "/"),
-          );
-          const specPath = fullPath?.slice(config.root.length);
-          return {
-            spec,
-            hash: createHash("sha1").update(specPath).digest("hex"),
-          };
-        })
-        .sort((a, b) => (a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0))
-        .slice(shardStart, shardEnd)
-        .map(({ spec }) => spec),
-    );
-  }
+        const shardSize = Math.ceil(files.length / shardCount);
+        const rawStart = shardSize * shardIndex;
+        const rawEnd = shardSize * (shardIndex + 1);
+        const shardStart = Number.isFinite(rawStart) ? rawStart : 0;
+        const shardEnd = Number.isFinite(rawEnd) ? rawEnd : files.length;
 
-  sort(files) {
-    return super.sort(files);
-  }
+        return Promise.resolve(
+            [...files]
+                .map((spec) => {
+                    let specPath;
+                    if (spec.moduleId) { // vitest v4
+                        specPath = spec.moduleId.slice(config.root.length)
+                    } else {
+                        const fullPath = resolve(
+                            config.root.replace(/\\/g, "/"),
+                            spec[1].replace(/\\/g, "/"),
+                        );
+                        specPath = fullPath?.slice(config.root.length);
+                    }
+                    return {
+                        spec,
+                        hash: createHash("sha1").update(specPath).digest("hex"),
+                    };
+                })
+                .sort((a, b) => (a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0))
+                .slice(shardStart, shardEnd)
+                .map(({ spec }) => spec),
+        );
+    }
+
+    sort(files) {
+        return super.sort(files);
+    }
 }
 
 export default BazelSequencer;
