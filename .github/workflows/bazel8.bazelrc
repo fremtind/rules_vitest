@@ -31,5 +31,3 @@ common --experimental_remote_cache_eviction_retries=5
 # Using the default value from Bazel 8.
 # Docs: https://bazel.build/reference/command-line-reference#common_options-flag--experimental_repository_downloader_retries
 common --experimental_repository_downloader_retries=5
-
-common --enable_bzlmod
