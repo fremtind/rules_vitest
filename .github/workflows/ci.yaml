@@ -81,6 +81,12 @@ jobs:
             folder: e2e/npm_packages
           - os: windows
             folder: .
+          - bazel-version:
+              major: 6
+            bzlmod: 1
+          - bazel-version:
+              major: 8
+            bzlmod: 0
 
     steps:
       - uses: actions/checkout@v4
