@@ -30,6 +30,7 @@ jobs:
           m=${v::1}
           a=(
             "major:$m, version:\"$v\""
+            "major:7, version:\"7.7.1\""
             "major:6, version:\"6.5.0\""
           )
           printf -v j '{%s},' "${a[@]}"
@@ -81,6 +82,12 @@ jobs:
             folder: e2e/npm_packages
           - os: windows
             folder: .
+          - bazel-version:
+              major: 6
+            bzlmod: 1
+          - bazel-version:
+              major: 8
+            bzlmod: 0
 
     steps:
       - uses: actions/checkout@v4
@@ -128,6 +135,7 @@ jobs:
             --test_tag_filters=-skip-on-bazel${{ matrix.bazel-version.major }} \
             --build_tag_filters=-skip-on-bazel${{ matrix.bazel-version.major }} \
             --enable_bzlmod=${{ matrix.bzlmod }} \
+            ${{ matrix.bzlmod == 1 && '--noenable_workspace' || '' }} \
             //...
 
   test-e2e:

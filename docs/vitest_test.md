@@ -7,9 +7,11 @@
 ## vitest_test
 
 <pre>
+load("@fremtind_rules_vitest//vitest:defs.bzl", "vitest_test")
+
 vitest_test(<a href="#vitest_test-name">name</a>, <a href="#vitest_test-node_modules">node_modules</a>, <a href="#vitest_test-config">config</a>, <a href="#vitest_test-data">data</a>, <a href="#vitest_test-snapshots">snapshots</a>, <a href="#vitest_test-auto_configure_reporters">auto_configure_reporters</a>,
             <a href="#vitest_test-auto_configure_test_sequencer">auto_configure_test_sequencer</a>, <a href="#vitest_test-snapshots_ext">snapshots_ext</a>, <a href="#vitest_test-quiet_snapshot_updates">quiet_snapshot_updates</a>, <a href="#vitest_test-timeout">timeout</a>, <a href="#vitest_test-size">size</a>,
-            <a href="#vitest_test-kwargs">kwargs</a>)
+            <a href="#vitest_test-kwargs">**kwargs</a>)
 </pre>
 
 vitest_test rule
