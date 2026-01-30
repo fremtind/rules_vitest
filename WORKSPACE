@@ -1,3 +1,6 @@
+# Declare the local Bazel workspace.
+workspace(name = "fremtind_rules_vitest")
+
 load(":internal_deps.bzl", "rules_vitest_internal_deps")
 
 # Fetch deps needed only locally for development
