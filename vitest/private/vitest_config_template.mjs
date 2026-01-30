@@ -134,9 +134,11 @@ if (coverageEnabled) {
   config.test.coverage.include = nonTestFiles;
 }
 
-console.error(
-    "DEBUG: fremtind_rules_vitest[vitest_test]: config:",
-    JSON.stringify(config, null, 2),
-);
+if (process.env.JS_BINARY__LOG_DEBUG) {
+  console.error(
+      "DEBUG: fremtind_rules_vitest[vitest_test]: config:",
+      JSON.stringify(config, null, 2),
+  );
+}
 
 export default config;
