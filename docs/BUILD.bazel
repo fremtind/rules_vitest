@@ -12,7 +12,10 @@ stardoc_with_diff_test(
 
 update_docs(
     name = "update",
-    tags = ["skip-on-bazel6"],
+    tags = [
+        "skip-on-bazel6",
+        "skip-on-bazel7",
+    ],
 )
 
 # Demonstration delivery target for Aspect Workflows.
