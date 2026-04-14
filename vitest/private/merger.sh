@@ -1,9 +1,25 @@
 #!/usr/bin/env bash
 
-# When --experimental_split_coverage_postprocessing is enabled copy the
-# $COVERAGE_DIR/coverage.dat to final destination that is $COVERAGE_OUTPUT_FILE
+DEBUG=${JS_BINARY__LOG_DEBUG:-$VITEST_DEBUG_COVERAGE}
+
+if [[ -n "$DEBUG" ]]; then
+  echo "DEBUG: [merger.sh] Started at $(date +%s.%N)" >&2
+  echo "DEBUG: [merger.sh] SPLIT_COVERAGE_POST_PROCESSING=$SPLIT_COVERAGE_POST_PROCESSING" >&2
+  echo "DEBUG: [merger.sh] COVERAGE_DIR=$COVERAGE_DIR" >&2
+  echo "DEBUG: [merger.sh] COVERAGE_OUTPUT_FILE=$COVERAGE_OUTPUT_FILE" >&2
+fi
+
 if [[ $SPLIT_COVERAGE_POST_PROCESSING == 1 ]]; then
-	cp "${COVERAGE_DIR}/coverage.dat" "${COVERAGE_OUTPUT_FILE}"
+  START=$(date +%s.%N)
+  cp "${COVERAGE_DIR}/coverage.dat" "${COVERAGE_OUTPUT_FILE}"
+  if [[ -n "$DEBUG" ]]; then
+    END=$(date +%s.%N)
+    echo "DEBUG: [merger.sh] cp completed in $(echo "$END - $START" | bc)s" >&2
+  fi
+fi
+
+if [[ -n "$DEBUG" ]]; then
+  echo "DEBUG: [merger.sh] Completed at $(date +%s.%N)" >&2
 fi
 
 exit 0
