@@ -4,6 +4,7 @@ load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 exports_files([
     "vitest_config_template.mjs",
+    "vitest_config_template_experimental.mjs",
     "bazel_sequencer.mjs",
     "bazel_snapshot_resolver.mjs",
     "bazel_snapshot_reporter.cjs",

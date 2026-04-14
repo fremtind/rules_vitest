@@ -8,7 +8,7 @@ load("//vitest/private:vitest_test.bzl", vitest_test_rule = "vitest_test")
 
 UPDATE_SNAPSHOTS_TARGET_SUFFIX = "_update_snapshots"
 
-def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_reporters, coverage_provider, **kwargs):
+def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_reporters, coverage_provider, experimental_config, **kwargs):
     data = kwargs.pop("data", [])
 
     vitest_dep = "{}/vitest".format(node_modules)
@@ -30,6 +30,7 @@ def _vitest_from_node_modules(vitest_rule, name, node_modules, auto_configure_re
         }),
         data = data,
         testonly = True,
+        experimental_config = experimental_config,
         **kwargs
     )
 
@@ -44,6 +45,7 @@ def vitest_test(
         coverage_provider = "istanbul",
         snapshots_ext = ".snap",
         quiet_snapshot_updates = False,
+        experimental_config = False,
         timeout = None,
         size = None,
         **kwargs):
@@ -212,6 +214,7 @@ def vitest_test(
         auto_configure_reporters = auto_configure_reporters,
         auto_configure_test_sequencer = auto_configure_test_sequencer,
         coverage_provider = coverage_provider,
+        experimental_config = experimental_config,
         tags = tags,
         size = size,
         bazel_sequencer = bazel_sequencer,
@@ -234,6 +237,7 @@ def vitest_test(
             auto_configure_reporters = auto_configure_reporters,
             auto_configure_test_sequencer = auto_configure_test_sequencer,
             coverage_provider = coverage_provider,
+            experimental_config = experimental_config,
             update_snapshots = True,
             quiet_snapshot_updates = quiet_snapshot_updates,
             entry_point = entry_point,
