@@ -69,6 +69,10 @@ if (!config.test) {
 }
 config.test.root = vitestConfigDir;
 
+if (process.env.TESTBRIDGE_TEST_ONLY) {
+  config.test.testNamePattern = process.env.TESTBRIDGE_TEST_ONLY;
+}
+
 if (autoConfTestSequencer) {
   if (config.test.sequence) {
     console.error(`WARNING: [vitest_test]: user supplied Vitest config test.sequence value '${JSON.stringify(
