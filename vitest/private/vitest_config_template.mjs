@@ -17,11 +17,15 @@ const projectRoot = path.join(
 );
 
 
-// Glob pattern paths for which files to cover must be relative to this
-// vitest config file in runfiles.
 const vitestConfigDir = path.dirname(
   _resolveRunfilesPath(generatedConfigShortPath),
 );
+
+// Directory of the user config file, used to resolve a relative explicit
+// `test.root` the way Vitest would (relative to the config file).
+const userConfigDir = userConfigShortPath
+  ? path.dirname(_resolveRunfilesPath(userConfigShortPath))
+  : vitestConfigDir;
 
 function _resolveRunfilesPath(rootpath) {
   return path.join(projectRoot, rootpath);
@@ -67,7 +71,15 @@ if (userConfigShortPath) {
 if (!config.test) {
   config.test = {};
 }
-config.test.root = vitestConfigDir;
+
+// Vitest defaults `test.root` to `process.cwd()`, which under Bazel is the
+// output-tree root rather than the package, so a value must always be set.
+// Default to the generated config's directory, but honor an explicit user
+// `test.root` (a relative one resolved against the user config file, as
+// Vitest would) instead of clobbering it.
+config.test.root = config.test.root
+  ? path.resolve(userConfigDir, config.test.root)
+  : vitestConfigDir;
 
 if (process.env.TESTBRIDGE_TEST_ONLY) {
   config.test.testNamePattern = process.env.TESTBRIDGE_TEST_ONLY;
@@ -130,13 +142,14 @@ if (coverageEnabled) {
     reporter: ["text", ["lcov", { file: coverageFile, projectRoot }]],
   };
 
-  // Only generate coverage for files declared in the COVERAGE_MANIFEST
+  // Glob pattern paths for which files to cover must be relative to test.root,
+  // which Vitest resolves coverage include globs against.
   config.test.coverage.include = fs
       .readFileSync(process.env.COVERAGE_MANIFEST)
       .toString("utf8")
       .split("\n")
       .filter((f) => f !== "")
-      .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
+      .map((f) => path.relative(config.test.root, path.join(projectRoot, f)));
 }
 
 if (process.env.JS_BINARY__LOG_DEBUG) {

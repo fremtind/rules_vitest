@@ -173,3 +173,27 @@ vitest_test(
     ],
     node_modules = "//:node_modules",
 )
+
+# Case 13: an explicit relative test.root must be honored and resolved against
+# the config file's directory, not clobbered by the package directory.
+vitest_test(
+    name = "case13",
+    config = "case13/case13.vitest.config.mjs",
+    data = [
+        "case13/case13.test.js",
+        "case13/src/case13.setup.js",
+    ],
+    node_modules = "//:node_modules",
+)
+
+# Case 14: coverage with an explicit test.root (see e2e test); the covered
+# source lives under the root, so include globs must resolve relative to it.
+vitest_test(
+    name = "case14",
+    config = "case14/case14.vitest.config.mjs",
+    data = [
+        "case14/src/case14.index.js",
+        "case14/src/case14.test.js",
+    ],
+    node_modules = "//:node_modules",
+)

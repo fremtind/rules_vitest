@@ -68,6 +68,11 @@ def vitest_test(
             minus TypeScript since we this rule extends from the configuration. TypeScript vitest configs should be transpiled
             before being passed to vitest_test with [rules_ts](https://github.com/aspect-build/rules_ts).
 
+            An explicit `test.root` in the config is honored; a relative value is resolved against the config
+            file's directory. When `test.root` is not set it defaults to the target's package directory. Coverage
+            `include` globs are resolved relative to `test.root`, so an explicit root must contain the source files
+            under test.
+
         data: Runtime dependencies of the Vitest test.
 
             This should include all test files, configuration files & files under test.
