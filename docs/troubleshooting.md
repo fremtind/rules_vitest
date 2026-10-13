@@ -23,6 +23,8 @@ Common performance issues include:
 
 Vitest runs tests concurrently using workers. This conflicts with Bazel which also runs tests and actions in parallel. Vitest concurrency will be configured by `rules_vitest` to work optimally with Bazel actions and Bazel test sharding.
 
+`bazel test --test_filter` (`TESTBRIDGE_TEST_ONLY`) is mapped to Vitest `testNamePattern`. Do not pass `--testNamePattern` as a `js_test` `args` Make fragment: when the env var is unset Vitest treats the unexpanded string as a file filter and collects no tests.
+
 ## Readonly CommonJS `exports`
 
 When ESM modules are transpiled to CommonJS different transpilers may produce different variants of CommonJS.
