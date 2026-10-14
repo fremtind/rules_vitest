@@ -132,6 +132,7 @@ if (coverageEnabled) {
       .toString("utf8")
       .split("\n")
       .filter((f) => f !== "")
+      .map((f) => f.replace(/^bazel-out\/[^/]+\/bin\//, ""))
       .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
 }
 

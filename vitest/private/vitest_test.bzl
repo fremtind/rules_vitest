@@ -149,26 +149,27 @@ def _impl(ctx):
         runfiles = runfiles.merge(ctx.attr.config[DefaultInfo].default_runfiles)
 
     if ctx.configuration.coverage_enabled:
-        providers.append(
-            coverage_common.instrumented_files_info(
-                ctx,
-                source_attributes = ["data"],
-                extensions = [
-                    "cjs",
-                    "cjx",
-                    "cts",
-                    "ctx",
-                    "js",
-                    "jsx",
-                    "mjs",
-                    "mjx",
-                    "mts",
-                    "mtx",
-                    "ts",
-                    "tsx",
-                ],
-            ),
+        instrumented_files_info = coverage_common.instrumented_files_info(
+            ctx,
+            source_attributes = ["data"],
+            dependency_attributes = ["data"],
+            extensions = [
+                "cjs",
+                "cjx",
+                "cts",
+                "ctx",
+                "js",
+                "jsx",
+                "mjs",
+                "mjx",
+                "mts",
+                "mtx",
+                "ts",
+                "tsx",
+            ],
         )
+        providers.append(instrumented_files_info)
+        runfiles = runfiles.merge(ctx.runfiles(transitive_files = instrumented_files_info.instrumented_files))
 
     providers.append(
         DefaultInfo(

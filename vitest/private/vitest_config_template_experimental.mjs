@@ -215,25 +215,41 @@ if (coverageEnabled) {
 
 // AFTER (fast): 3-5 directory globs → O(N × 5) minimatch
     timeStart('compute coverage.include paths');
+    const BAZEL_OUT_BIN = /^bazel-out\/[^/]+\/bin\//;
     const specificPaths = manifestLines
+        .map((f) => f.replace(BAZEL_OUT_BIN, ""))
         .map((f) => path.relative(vitestConfigDir, path.join(projectRoot, f)));
 
     const COVERAGE_EXTENSIONS = '{ts,tsx,js,jsx,mjs,cjs,cts,mts}';
+    const COMPILED_COVERAGE_EXTENSIONS = '{js,jsx,mjs,cjs}';
+    const COMPILED_EXT = { '.ts': '.js', '.tsx': '.js', '.mts': '.mjs', '.cts': '.cjs' };
     const topLevelDirs = new Set();
+    const compiledTopLevelDirs = new Set();
     const rootLevelFiles = [];
     for (const relPath of specificPaths) {
         const slashIdx = relPath.indexOf('/');
         if (slashIdx === -1 || relPath.startsWith('../')) {
             // Can't generalize; keep specific path
             rootLevelFiles.push(relPath);
-        } else {
-            topLevelDirs.add(relPath.substring(0, slashIdx));
+            continue;
+        }
+        const dir = relPath.substring(0, slashIdx);
+        topLevelDirs.add(dir);
+        const ext = path.extname(relPath);
+        if (COMPILED_EXT[ext] && fs.existsSync(path.join(vitestConfigDir, relPath.slice(0, -ext.length) + COMPILED_EXT[ext]))) {
+            compiledTopLevelDirs.add(dir);
         }
     }
     config.test.coverage.include = [
-        ...[...topLevelDirs].map(dir => `${dir}/**/*.${COVERAGE_EXTENSIONS}`),
+        ...[...topLevelDirs].map(dir => `${dir}/**/*.${compiledTopLevelDirs.has(dir) ? COMPILED_COVERAGE_EXTENSIONS : COVERAGE_EXTENSIONS}`),
         ...rootLevelFiles,
     ];
+    if (compiledTopLevelDirs.size > 0) {
+        config.test.exclude = [
+            ...(config.test.exclude ?? ['**/node_modules/**', '**/.git/**']),
+            ...[...compiledTopLevelDirs].map(dir => `${dir}/**/*.{ts,tsx,mts,cts}`),
+        ];
+    }
 
     timeEnd('compute coverage.include paths');
 
