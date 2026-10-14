@@ -28,9 +28,17 @@ _attrs = dicts.add(js_binary_lib.attrs, {
     "env_inherit": attr.string_list(
         doc = """Environment variables to inherit from the external environment.""",
     ),
+    "experimental_config": attr.bool(
+        default = False,
+        doc = """Whether to use the experimental config template built for speed""",
+    ),
     "_vitest_config_template": attr.label(
         allow_single_file = True,
         default = Label("//vitest/private:vitest_config_template.mjs"),
+    ),
+    "_vitest_config_template_experimental": attr.label(
+        allow_single_file = True,
+        default = Label("//vitest/private:vitest_config_template_experimental.mjs"),
     ),
     # Earlier versions of Bazel expect this attribute to be present.
     # https://github.com/bazelbuild/bazel/issues/13978
@@ -46,9 +54,11 @@ def _impl(ctx):
     providers = []
     generated_config = ctx.actions.declare_file("%s__vitest.config.mjs" % ctx.label.name)
     user_config = copy_file_to_bin_action(ctx, ctx.file.config) if ctx.attr.config else None
-
+    config_template = (
+        ctx.file._vitest_config_template_experimental if ctx.attr.experimental_config else ctx.file._vitest_config_template
+    )
     ctx.actions.expand_template(
-        template = ctx.file._vitest_config_template,
+        template = config_template,
         output = generated_config,
         substitutions = {
             "{{GENERATED_CONFIG_SHORT_PATH}}": generated_config.short_path,
@@ -139,26 +149,27 @@ def _impl(ctx):
         runfiles = runfiles.merge(ctx.attr.config[DefaultInfo].default_runfiles)
 
     if ctx.configuration.coverage_enabled:
-        providers.append(
-            coverage_common.instrumented_files_info(
-                ctx,
-                source_attributes = ["data"],
-                extensions = [
-                    "cjs",
-                    "cjx",
-                    "cts",
-                    "ctx",
-                    "js",
-                    "jsx",
-                    "mjs",
-                    "mjx",
-                    "mts",
-                    "mtx",
-                    "ts",
-                    "tsx",
-                ],
-            ),
+        instrumented_files_info = coverage_common.instrumented_files_info(
+            ctx,
+            source_attributes = ["data"],
+            dependency_attributes = ["data"],
+            extensions = [
+                "cjs",
+                "cjx",
+                "cts",
+                "ctx",
+                "js",
+                "jsx",
+                "mjs",
+                "mjx",
+                "mts",
+                "mtx",
+                "ts",
+                "tsx",
+            ],
         )
+        providers.append(instrumented_files_info)
+        runfiles = runfiles.merge(ctx.runfiles(transitive_files = instrumented_files_info.instrumented_files))
 
     providers.append(
         DefaultInfo(
